@@ -1,6 +1,8 @@
 # family_sonification
 
-# communication with ableton
+**Important Note:** This is a work in progress, meaning it doesn't work. Also, the explanation below refers to the process using rtmidi; this is no longer relevant, as I am using braid now.
+
+## communication with ableton w/ rtmidi
 To communicate with Ableton, you have to:
     1) open a virtual port
     2) connect Ableton to that port
@@ -8,14 +10,14 @@ To communicate with Ableton, you have to:
     4) locate your port, and open it inside your MidiOut device
     5) use your MidiOut's send_message() to get midi signal to virtual port
     
-# 1 - Open Virtual Port
+#### 1 - Open Virtual Port
 Can be done on mac using Audio Midi Setup, a builtin tool. 
 Just activate the IAC Driver tool using the "device online" checkbox.
 
-# 2 - Connect Ableton
+#### 2 - Connect Ableton
 Switch to the IAC under "Midi From" tag, on the lower third part of a Midi Channel.
 
-# 3, 4, 5 - Set up MidiOut device, connect to port and send MIDI
+#### 3, 4, 5 - Set up MidiOut device, connect to port and send MIDI
 Here is some example code I found online:
 
 ```python
@@ -44,7 +46,7 @@ midiout.send_message(note_on)
 del midiout
 ```
 
-# MIDI messages
+#### MIDI messages
 In all MIDI messages, you send three hex numbers: status (message type) and two data bits dependant on the first.
 This is all in hex (preceded by 0x), but can be done in ascii as well.
 
@@ -54,7 +56,7 @@ Note On: 0x9# (# is the Ableton channel to send to, minus 1, because count start
 Note On: 0x8# (# is the Ableton channel to send to, minus 1, because count starts from 0 here)
     2nd Bit: Note to play   3rd Bit: Velocity
     
-# Some Hands-On Examples
+#### Some Hands-On Examples
 I found the MIDI sequence to play the following measure:
 ![alt-text](http://www.music-software-development.com/images/Midi-example-1.jpg)
 

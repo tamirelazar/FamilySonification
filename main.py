@@ -1,9 +1,10 @@
 import time
 import pandas as pd
+import rtmidi as rtmidi
+
 from utils import MidiTool, FamilyParser
 from braid import *
 from SonicFamilyTree import SonicFamilyTree
-import rtmidi
 
 
 # initialize the midi tool
