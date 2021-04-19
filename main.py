@@ -132,10 +132,7 @@ def build_quarter(year, q):
     ret = []
     for i in range(q):
         ret.append(q)
-    if q == 3:
-        sub_beat.play(1)
-    if q == 4:
-        subsub_beat.play(1)
+    sub_beat.play(q)
     return ret
 
 
@@ -143,6 +140,7 @@ tempo(120)  # global
 year = START_YEAR
 def year_inc():
     global year
+    global_beat.pattern = [build_quarter(year, 1), build_quarter(year, 2), build_quarter(year, 3), build_quarter(year, 4)]
     year += 1
     if year == 2022:
         global_beat.stop()

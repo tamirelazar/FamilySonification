@@ -14,6 +14,7 @@ Documentation of things I can and can't do with braid.
     
     Solution: call from trigger, create the pattern yearly instead of quarterly.
 2. Braid works with the custom class Thread, but the core.Driver class that controls general playback is a child class of the threading.Thread class (whatever that means).
+3. Indeed, it seems every time thread.pattern gets an input, it parses it (all at once). Means i can make this work with precalculating each year, w/ the calculating function getting called from the trigger of global_beat and launches into creating and updating all other threads.
 ## Things that work
 ### Playing single note from pattern
 for the following pattern
