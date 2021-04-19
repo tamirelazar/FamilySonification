@@ -2,11 +2,18 @@
 
 Documentation of things I can and can't do with braid.
 
+## Ideas to attempt
+* Creating full measures instead of trying to create quarters - can be set through triggers.
+    * Also try to get global triggers working.
+    * Also!!!!!! try to set the exact same pattern in the beginning of each cycle. This can be implemented in braid as a setting for a thread (refresh pattern every cycle)
+* Adding support for partial measure triggers (thread.trigger(func, 0.5, True), etc)
+
+
 ## Conclusions so far
 1. Function calls as notes: braid runs them once, stores their return value, then plays this. This means patterns cannot be context aware, no matter what.
     
     Solution: call from trigger, create the pattern yearly instead of quarterly.
-
+2. Braid works with the custom class Thread, but the core.Driver class that controls general playback is a child class of the threading.Thread class (whatever that means).
 ## Things that work
 ### Playing single note from pattern
 for the following pattern
