@@ -3,159 +3,105 @@
 
 from utils import FamilyParser
 from braid import *
-from SonicFamilyTree import SonicFamilyTree
+import copy
 
 START_YEAR = 1990
 END_YEAR = 2021
 
 
-# # initialize the midi tool
-# # midi = MidiTool()
-parser = FamilyParser("demo_family.csv")
-# # tree = SonicFamilyTree(parser, midi)
-#
-# queen = next(parser)
-# philip = next(parser)
-#
-# ### Queen Elizabeth II ###
-# queen_bday = queen["Birth"]
-# queen_birthday_idx = pd.date_range(queen_bday, "1960-01-01", freq=pd.DateOffset(years=1))
-# queen_b = pd.Series("Birthday", index=queen_birthday_idx)
-# queen_b[queen_bday] = "Birth"
-# queen_b = pd.DataFrame({"Queen": queen_b})
-#
-# ### Prince Philip ###
-# philip_bday = philip["Birth"]
-# philip_birthday_idx = pd.date_range(philip_bday, "1960-01-01", freq=pd.DateOffset(years=1))
-# philip_b = pd.Series("Birthday", index=philip_birthday_idx)
-# philip_b[philip_bday] = "Birth"
-# philip_b = pd.DataFrame({"Philip": philip_b})
-#
-# #print(pd.concat([queen_b, philip_b], axis=1))
-#
-# tempo(120)                  # set the universal tempo
-#
-#
-#
-# births = Thread(3)
-# births.chord = E3, DOM
-# births.pattern = 0, 0, 0, 0
-# births.start()
-#
-# # drums = Thread(10)              # channel 10 is ,MIDI for drums
-#
-# # drums.pattern = [([K, H], [K, K]), (K, O)], (H, [H, K]), (S, [S, (O, K), 0, g(S)]), [[H, H], ([H, H], O, [g(S), g(S), g(S), g(S)])]         # K, S, H, O are built-in aliases for 36, 38, 42, 46
-# # drums.start(births)
-#
-#
-# def validate_birth():
-#     # if validate_birth.curr_year >= 1921: # manually add philip birth in oct 1921
-#     #     birth.pattern.add([0, 0, 2, 0])
-#     # if validate_birth.curr_year >= 1926: # manually add queen birth in apr 1926
-#     #     birth.pattern.add([0, 5, 0, 0])
-#     def charles_birth():
-#         if validate_birth.curr_year == 1949:
-#             # birth.pattern.add([0, 0, 0, 7])
-#             midiout.send_message([0x92, 60, 112])
-#             time.sleep(0.25)
-#             midiout.send_message([0x92, 60, 112])
-#         else:
-#             midiout.send_message([0x90, 60, 112])
-#     if validate_birth.curr_year == 1948: # manually add charles birth in nov 1948
-#         births.pattern.add([0, 0, 0, 7])
-#     if validate_birth.curr_year == 1949:
-#         birth.pattern.add([0, 0, 0, 7])
-#         births.pattern = Z, Z, 0, 0
-#     if validate_birth.curr_year == 1950: # manually add anne birth in aug 1950
-#         births.pattern = [0, 0, [0, 4], 0]
-#     if validate_birth.curr_year == 1951:
-#         birth.pattern = [0, 5, [2, 4], 7]
-#         validate_birth.curr_year += 6
-#         births.pattern = Z, Z, 0, 0
-#     if validate_birth.curr_year == 1960: # manually add andrew birth in feb 1960
-#         births.pattern = [9, 0, [0, 0], 0]
-#     if validate_birth.curr_year == 1961:
-#         birth.pattern = [9, 5, [2, 4], 7]
-#         births.pattern = Z, Z, 0, 0
-#         validate_birth.curr_year += 1
-#     if validate_birth.curr_year == 1964: # manually add edward birth in mar 1964
-#         birth.pattern = [[9, 10], 5, [2, 4], 7]
-#     validate_birth.curr_year += 1
-#
-#
-# validate_birth.curr_year = 1945
-#
-#
-#
-#
-# birth = Thread(1)
-# birth.chord = E3, DOM
-# birth.pattern = 0, 5, 2, 0
-# birth.start(births)
-# birth.trigger(validate_birth, 1, True)
-#
-#
-# def validate_marriage():
-#     if validate_marriage.curr_year == 1947: # manually add philip birth in oct 1921
-#         marriage.pattern.add([0, 0, 0, [[5, 2], [0, 0]]])
-#     if validate_marriage.curr_year > 1947:
-#         if validate_marriage.curr_year % 2 == 0:
-#             marriage.pattern = 0, Z, 0, [[2, 5], [Z, 0]]
-#         else:
-#             marriage.pattern = 0, 0, 0, [[5, 2], [Z, 0]]
-#         # marriage.pattern = 0, 0, 0, Z
-#     if validate_marriage.curr_year == 1950: # manually add anne birth in aug 1950
-#         validate_marriage.curr_year += 6
-#     if validate_marriage.curr_year == 1960: # manually add andrew birth in feb 1960
-#         validate_marriage.curr_year += 1
-#     validate_marriage.curr_year += 1
-#
-#
-# validate_marriage.curr_year = 1945
-#
-# marriage = Thread(2)
-# marriage.chord = E3, DOM
-# marriage.pattern = 0, 0, 0, 0
-# marriage.start(births)
-# marriage.trigger(validate_marriage, 1, True)
-#
-# play()
+def counter(func):
+    def wrapped(*args, **kwargs):
+        if wrapped.year == END_YEAR:
+            #stop()
+            return
+        wrapped.year += 1
+        print(wrapped.year)
+        return func(*args, wrapped.year, **kwargs)
+    wrapped.year = START_YEAR - 1
+    return wrapped
 
-# plan: create beat thread which sends 4 quarters to a quarter calculation function
+@counter
+def update_all_patterns(curr_year):
+    global family
+    global_pattern = create_global_pattern(curr_year)
+    for memb in family:
+        memb_num = memb.get_ref_num()
+        personal_pat = global_to_personal(copy.deepcopy(global_pattern), memb_num)
+        memb.get_thread().pattern = personal_pat
+        # 2nd version
+        # update_personal_pattern
 
-def build_quarter(year, q):
-    """
-    gets the number of quarter to calculate and the current year
-    :param q:
-    :return:
-    """
-    ret = []
-    for i in range(q):
-        ret.append(q)
-    sub_beat.play(q)
-    return ret
+def global_to_personal(pattern, mem_num):
+    for i in range(4):
+        if not pattern[i]:
+            pattern[i] = 0
+        else:
+            pattern[i] = [i if i == mem_num else 0 for i in pattern[i]]
+    return pattern
 
 
-tempo(120)  # global
-year = START_YEAR
-def year_inc():
-    global year
-    global_beat.pattern = [build_quarter(year, 1), build_quarter(year, 2), build_quarter(year, 3), build_quarter(year, 4)]
-    year += 1
-    if year == 2022:
-        global_beat.stop()
+def update_personal_pattern(mem, curr_year):
+    q1, q2, q3, q4 = [0] * 4
+    mem_thread = mem.get_thread()
+    mem_birth_year = mem.get_birth().year
+    mem_birth_month = mem.get_birth().month
+    mem_num = mem.get_ref_num()
 
-global_beat = Thread(1)
-sub_beat = Thread(2)
-subsub_beat = Thread(3)
-sub_beat.chord = E3, DOM
-subsub_beat.chord = E3, DOM
-global_beat.chord = E3, DOM
-global_beat.pattern = [build_quarter(year, 1), build_quarter(year, 2), build_quarter(year, 3), build_quarter(year, 4)]
-global_beat.trigger(year_inc, 1, True)
+    if curr_year < mem_birth_year:
+        pass
+    else:
+        if mem_birth_month in [1, 2, 3]:
+            q1 = mem_num
+        elif mem_birth_month in [4, 5, 6]:
+            q2 = mem_num
+        elif mem_birth_month in [7, 8, 9]:
+            q3 = mem_num
+        else:
+            q4 = mem_num
+
+    mem_thread.pattern = [q1, q2, q3, q4]
+    return
+
+
+def create_global_pattern(curr_year):
+    global family
+    q1, q2, q3, q4 = [], [], [], []
+    for mem in family:
+        mem_birth_year = mem.get_birth().year
+        mem_birth_month = mem.get_birth().month
+        mem_num = mem.get_ref_num()
+
+        if curr_year < mem_birth_year:
+            pass
+        else:
+            if mem_birth_month in [1, 2, 3]:
+                q1.append(mem_num)
+            elif mem_birth_month in [4, 5, 6]:
+                q2.append(mem_num)
+            elif mem_birth_month in [7, 8, 9]:
+                q3.append(mem_num)
+            else:
+                q4.append(mem_num)
+
+    return [q1, q2, q3, q4]
+
+
+parser = FamilyParser("elazar_family.csv")
+family = parser.get_month_sorted_family()
+
+tempo(200)
+family_chord = E3, DOM
+
+global_beat = Thread(10)
+global_beat.chord = family_chord
+global_beat.pattern = Z, Z, Z, Z
+
+for idx, member in enumerate(family):
+    new_thread = Thread(idx + 1)
+    new_thread.chord = family_chord
+    new_thread.start(global_beat)
+    member.set_braid_thread(new_thread)
+
+global_beat.trigger(update_all_patterns, 1, True)
 global_beat.start()
-sub_beat.start(global_beat)
-subsub_beat.start(global_beat)
-
-
 play()
