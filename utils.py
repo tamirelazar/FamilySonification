@@ -1,5 +1,6 @@
 import csv
 import pandas as pd
+from braid import *
 
 
 class FamilyParser:
@@ -55,4 +56,12 @@ class FamilyMember:
 
     def get_thread(self):
         return self.thread
+
+    def passed(self, year):
+        if pd.isnull(self.death) or self.death.year > year:
+            return False
+        elif self.death.year == year:
+            self.thread.chord = E2, DOM
+            self.thread.rate = 1
+        return True
 
