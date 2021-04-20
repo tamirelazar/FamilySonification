@@ -1,9 +1,9 @@
 # import time
 # import pandas as pd
 
-# from utils import FamilyParser
+from utils import FamilyParser
 from braid import *
-# from SonicFamilyTree import SonicFamilyTree
+from SonicFamilyTree import SonicFamilyTree
 
 START_YEAR = 1990
 END_YEAR = 2021
@@ -11,7 +11,7 @@ END_YEAR = 2021
 
 # # initialize the midi tool
 # # midi = MidiTool()
-# parser = FamilyParser("demo_family.csv")
+parser = FamilyParser("demo_family.csv")
 # # tree = SonicFamilyTree(parser, midi)
 #
 # queen = next(parser)

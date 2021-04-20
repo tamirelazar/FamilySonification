@@ -1,6 +1,7 @@
 import time
 import csv
 import rtmidi
+import pandas as pd
 
 # class MidiTool:
 #     midiout = None
@@ -41,9 +42,12 @@ import rtmidi
 #         del self.midiout
 #
 
+
 class FamilyParser:
     family_data = None
     raw_csv = None
+    family_members = None
+    birthdays = None
 
     def __init__(self, csv_file):
         self.raw_csv = open(csv_file, newline='', encoding='utf-8-sig')
@@ -55,3 +59,28 @@ class FamilyParser:
     def __next__(self):
         return next(self.family_data)
 
+    def get_family_members(self):
+        self.family_members = []
+        for member in self.family_data:
+            self.family_members.append(FamilyMember(member))
+        return self.family_members
+
+class FamilyMember:
+
+    def __init__(self, infoDict):
+        self.birth = pd.to_datetime(infoDict["Birth"], dayfirst=True)
+        self.death = pd.to_datetime(infoDict["Death"], dayfirst=True)
+        self.reference_num = int(infoDict["Reference Number"])
+        self.name = infoDict["Name"]
+
+    def get_ref_num(self):
+        return self.reference_num
+
+    def get_name(self):
+        return self.name
+
+    def get_birth(self):
+        return self.birth
+
+    def get_death(self):
+        return self.death
