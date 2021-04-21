@@ -5,6 +5,7 @@ from utils import FamilyParser
 from braid import *
 import copy
 
+# START_YEAR = 1982 # keren
 START_YEAR = 1990
 END_YEAR = 2021
 TEMPO = 200
@@ -90,15 +91,15 @@ def update_deceased_pattern(member, pattern):
     def reg(n):
         def f(memb_thread):
             global TEMPO, vel
-            if TEMPO > 50:
-                TEMPO = TEMPO / 2
+            if TEMPO > 100:
+                TEMPO = TEMPO / 4
                 tempo(TEMPO)
             if vel > 0.5:
                 vel = vel - 0.1
                 memb_thread.velocity = vel
-            if vel <= 0.5:
-                stop()
-                clear()
+            # if vel <= 0.5:
+            #     stop()
+            #     clear()
             return n
         return f
 
@@ -220,7 +221,9 @@ def create_global_pattern(curr_year):
     return [q1, q2, q3, q4]
 
 
-parser = FamilyParser("elazar_family.csv")
+data_path = "elazar_family.csv"
+
+parser = FamilyParser(data_path)
 family = parser.get_month_sorted_family()
 
 tempo(TEMPO)
@@ -238,3 +241,35 @@ for idx, member in enumerate(family):
 global_beat.trigger(update_all_patterns_3rd, 1, True)
 global_beat.start()
 play()
+
+
+
+
+
+
+
+def run_sonification(data_path):
+    parser = FamilyParser(data_path)
+    family = parser.get_month_sorted_family()
+
+    tempo(TEMPO)
+
+    global_beat = Thread(10)
+    global_beat.chord = family_chord
+    global_beat.pattern = Z, Z, Z, Z
+
+    for idx, member in enumerate(family):
+        new_thread = Thread(idx + 1)
+        new_thread.chord = family_chord
+        new_thread.start(global_beat)
+        member.set_braid_thread(new_thread)
+
+    global_beat.trigger(update_all_patterns_3rd, 1, True)
+    global_beat.start()
+    play()
+
+
+# if __name__ == "__main__":
+#     # family_data = sys.argv[1]
+#     family_data = "sch_family.csv"
+#     run_sonification(family_data)
