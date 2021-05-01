@@ -62,6 +62,6 @@ class FamilyMember:
             return False
         elif self.death.year == year:
             self.thread.chord = E2, DOM
-            self.thread.rate = 1
+            self.thread.velocity = 1
         return True
 

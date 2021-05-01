@@ -5,15 +5,22 @@ from utils import FamilyParser
 from braid import *
 import copy
 
-# START_YEAR = 1982 # keren
-START_YEAR = 1990
+START_YEAR = 1990 # tamir
 END_YEAR = 2021
 TEMPO = 200
-member_passed = False
-vel = 1
 family_chord = E3, DOM
 mourning_chord = E3, MIN
+data_path = "elazar_family.csv"
+#
+# START_YEAR = 1982 # keren
+# END_YEAR = 2010
+# TEMPO = 180
+# family_chord = D3, MAJ
+# mourning_chord = E3, MIN
+# data_path = "sch_family.csv"
 
+member_passed = False
+vel = 1
 
 def counter(func):
     def wrapped(*args, **kwargs):
@@ -33,8 +40,6 @@ def update_all_patterns(curr_year):
         memb_num = memb.get_ref_num()
         personal_pat = global_to_personal(copy.deepcopy(global_pattern), memb_num)
         memb.get_thread().pattern = personal_pat
-        # 2nd version
-        # update_personal_pattern
 
 
 @counter
@@ -47,8 +52,6 @@ def update_all_patterns_3rd(curr_year):
         personal_pat = copy.deepcopy(global_pattern)
         if memb.passed(curr_year):
             update_deceased_pattern(memb, personal_pat)
-        # if curr_year == 2017 and not memb.passed(curr_year):
-        #     memb.thread.chord = tween((mourning_chord), 8, ease_in_out())
         else:
             memb_num = memb.get_ref_num()
             memb_thread = memb.get_thread()
@@ -74,19 +77,11 @@ def update_all_patterns_3rd(curr_year):
                     personal_pat[i] = [0]
                 else:
                     personal_pat[i] = [reg(i) if i == memb_num else weak(memb_num) for i in personal_pat[i]]
-
             memb_thread.pattern = personal_pat
 
 
 def update_deceased_pattern(member, pattern):
-    memb_num = member.get_ref_num()
     memb_thread = member.get_thread()
-
-    def weak(n):
-        def f(memb_thread):
-            memb_thread.velocity = 0.2
-            return n
-        return f
 
     def reg(n):
         def f(memb_thread):
@@ -97,23 +92,15 @@ def update_deceased_pattern(member, pattern):
             if vel > 0.5:
                 vel = vel - 0.1
                 memb_thread.velocity = vel
-            # if vel <= 0.5:
-            #     stop()
-            #     clear()
+            if vel <= 0.6:
+                stop()
+                clear()
             return n
         return f
 
     for i in range(4):
-        if not pattern[i]:
-            pattern[i] = [0]
-        elif memb_num in pattern[i]:
-            # pattern[i] = [weak(memb_num)]
-            pattern[i] = [0]
-        else:
-            pattern[i] = [0]
-
+        pattern[i] = [0]
     pattern[3].append(reg(-1))
-
     memb_thread.pattern = pattern
 
 
@@ -220,8 +207,6 @@ def create_global_pattern(curr_year):
 
     return [q1, q2, q3, q4]
 
-
-data_path = "elazar_family.csv"
 
 parser = FamilyParser(data_path)
 family = parser.get_month_sorted_family()
