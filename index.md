@@ -1,39 +1,20 @@
-## bla bla bla sonification website give job to tamir
+# Family Sonificator
+Parametric composition of familial event patterns.
 
-## Welcome to GitHub Pages
+## Technical Side
+### Data Collection
+![image](https://github.com/tamirelazar/family_sonification/blob/fad0e4e0120a46c8ec0a8ee71d11d5b1f6d992b7/images/demo_csv_screenshot.png)
 
-You can use the [editor on GitHub](https://github.com/tamirelazar/family_sonification/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Manual collection via CSV files, as well as choosing certain parameters personally with the subject.
+### Data Processing
+<img src="https://github.com/tamirelazar/family_sonification/blob/fad0e4e0120a46c8ec0a8ee71d11d5b1f6d992b7/images/family_member_example.png" height="50%" width="50%">
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Basic processing using python, pandas etc.
+### MIDI Sequencing
+![image](https://github.com/tamirelazar/family_sonification/blob/fad0e4e0120a46c8ec0a8ee71d11d5b1f6d992b7/images/braid_code_example.png)
 
-### Markdown
+Sequencing was done using the Braid package by Brian House. Thanks Brian!
+### Sound Design
+<img src="https://github.com/tamirelazar/family_sonification/blob/fad0e4e0120a46c8ec0a8ee71d11d5b1f6d992b7/images/ableton%20shot.png" height="50%" width="50%">
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/tamirelazar/family_sonification/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+MIDI output was ported to Ableton for further audio design work.
