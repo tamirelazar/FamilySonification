@@ -11,9 +11,9 @@ TEMPO = 200
 family_chord = E3, DOM
 mourning_chord = E3, MIN
 data_path = "elazar_family.csv"
-#
+
 # START_YEAR = 1982 # keren
-# END_YEAR = 2010
+# END_YEAR = 2006
 # TEMPO = 180
 # family_chord = D3, MAJ
 # mourning_chord = E3, MIN
@@ -25,6 +25,9 @@ vel = 1
 def counter(func):
     def wrapped(*args, **kwargs):
         if wrapped.year == END_YEAR:
+            if data_path == "sch_family.csv":
+                stop()
+                clear()
             return
         wrapped.year += 1
         print(wrapped.year)
@@ -91,7 +94,7 @@ def update_deceased_pattern(member, pattern):
                 tempo(TEMPO)
             if vel > 0.5:
                 vel = vel - 0.1
-                memb_thread.velocity = vel
+                # memb_thread.velocity = vel
             if vel <= 0.6:
                 stop()
                 clear()
