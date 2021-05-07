@@ -12,6 +12,6 @@ Basic processing using python, pandas etc.
 
 Sequencing was done using the Braid package by Brian House. Thanks Brian!
 ### Sound Design
-<img src="https://github.com/tamirelazar/family_sonification/blob/fad0e4e0120a46c8ec0a8ee71d11d5b1f6d992b7/images/ableton%20shot.png" height="50%" width="50%">
+<img src="images/ableton shot.png" height="50%" width="50%">
 
 MIDI output was ported to Ableton for further audio design work.
