@@ -1,6 +1,3 @@
-# Family Sonificator
-Parametric composition of familial event patterns.
-
 ## Technical Side
 ### Data Collection
 ![image](https://github.com/tamirelazar/family_sonification/blob/fad0e4e0120a46c8ec0a8ee71d11d5b1f6d992b7/images/demo_csv_screenshot.png)
