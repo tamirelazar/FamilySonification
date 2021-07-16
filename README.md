@@ -1,4 +1,7 @@
-## Technical Side
+## Artistic Purpose
+Well, I'll have to get back to you about that.
+
+## Technical Information
 
 ### Data Collection
 ![image](./images/demo_csv_screenshot.png)
