@@ -1,6 +1,5 @@
-# family_sonification
-
 ## Technical Side
+
 ### Data Collection
 ![image](./images/demo_csv_screenshot.png)
 
