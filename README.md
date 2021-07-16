@@ -4,7 +4,7 @@ This was a personal project, created to process some of my feelings about family
 I am now developing this as a collaborative process with others that have experienced loss, constructing the generative musical grammar that decribes their emotional landscape and letting the Family Sonification program compose the actual music based on that grammar.
 
 ### Let's Talk
-This helped me, a lot - I feel it might help other too.
+This helped me, a lot, and I feel it might help other too.
 
 If this sound interesting to you, contact me at tamir.elazar@gmail.com, and we'll try to build your own version of family sonification together.
 
